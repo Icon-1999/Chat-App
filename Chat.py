@@ -12,12 +12,11 @@ def help():
           "8. exit\n")
     
 def myip():
-    import socket
-    ## getting the hostname by socket.gethostname() method
+    # get the hostname
     hostname = socket.gethostname()
-    ## getting the IP address using socket.gethostbyname() method
+    # get the IP address
     ip_address = socket.gethostbyname(hostname)
-    ## printing the ip_address
+    # print ip_address
     print(f"IP Address: {ip_address}")
 
 def myport():
