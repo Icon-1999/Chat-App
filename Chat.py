@@ -8,7 +8,7 @@ if (n != 2):
     print("Invalid amount of arguments\n" + "try 'python Chat.py <port no>'\n")
     exit(0)
 
-port = int(sys.argv[1])
+my_port = int(sys.argv[1])
 
 def options():
     print("\n")
@@ -49,14 +49,14 @@ def myip():
     # get the hostname
     hostname = socket.gethostname()
     # get the IP address
-    ip_address = socket.gethostbyname(hostname)
+    my_ip_address = socket.gethostbyname(hostname)
     # print ip_address
-    print(f"your IP Address is: {ip_address}")
+    print(f"your IP Address is: {my_ip_address}")
 
 def myport():
-    print(f"Your port number is: {port}")
+    print(f"Your port number is: {my_port}")
 
-def connect(destination, port):
+def connect(ip_destination, port_destination):
     stuff
 
 def list():
@@ -72,10 +72,13 @@ def send(connection_id, message):
 def UI():
     options()
     UserChoice = ''
+    connection_id = ''
+    message = ''
 
     while(UserChoice != "exit"):
 
         UserChoice = input("Select from the options above: ")
+        UserChoice.split()
 
         match UserChoice:
             case "help":
@@ -86,8 +89,8 @@ def UI():
             case "myport":
                 myport()
                 options()
-            case "connect":
-                connect(destination, port)
+            case["connect", destination_ip, destination_port]:
+                connect(destination_ip, destination_port)
                 options()
             case "list":
                 list()
@@ -105,7 +108,7 @@ def UI():
                 options()
 
 def Main():
-    if((port <= 0) or (port >= 5000)):
+    if((my_port <= 0) or (my_port >= 5000)):
         print("Invalid input\n" + "Port number must be between 1 and 4999")
         return
     else:
