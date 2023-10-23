@@ -30,18 +30,18 @@ def help():
 
           "4. 'connect <destination> <port no>' - This command establishes a new TCP connection to the specified\n"
             "<destination> at the specified <port no>. The <destination> is the IP address of the receiver's computer.\n"
-            "The <port no> is the receiver's port number that is waiting for incoming TCP connection"
+            "The <port no> is the receiver's port number that is waiting for incoming TCP connection\n\n"
 
-          "5. 'list' - Displays a numbered list of all the connections this process is part of. This numbered list will include\n"
-            "connections initiated by this process and connections initiated by other processes.\n\n"
+          "5. 'list' - Displays a numbered list of all the connections this process is part of. This numbered list will\n"
+            "include connections initiated by this process and connections initiated by other processes.\n\n"
 
           "6. 'terminate <connection id.>' - This command will terminate the connection listed under the specified\n"
-            "<connection id.> when LIST is used to display all connections. E.g., terminate 2. In this example, the connection\n"
-            "with 192.168.21.21 should end.\n\n"
+            "<connection id.> when LIST is used to display all connections. E.g., terminate 2. In this example, the\n"
+            "connection with 192.168.21.21 should end.\n\n"
 
-          "7. 'send <connection id.> <message>'- This will send the message to the host on the connection\n"
-            "that is designated by the number <connection id.> when command “list” is used. The message to be sent can be up-to 100\n"
-            "characters long, including blank spaces.\n\n"
+          "7. 'send <connection id.> <message>'- This will send the message to the host on the connection that is\n"
+            "designated by the number <connection id.> when command “list” is used. The message to be sent can be up-to\n"
+            "100 characters long, including blank spaces.\n\n"
 
           "8. 'exit' - Close all connections and terminate this process.\n\n")
     
