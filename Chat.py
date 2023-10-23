@@ -73,14 +73,17 @@ def UI():
     options()
     UserChoice = ''
     connection_id = ''
+    destination_ip = ''
+    destination_port = ''
     message = ''
 
     while(UserChoice != "exit"):
 
         UserChoice = input("Select from the options above: ")
-        UserChoice.split()
+        input_choice = UserChoice.split()
+        print(input_choice)
 
-        match UserChoice:
+        match input_choice:
             case "help":
                 help()
             case "myip":
@@ -95,10 +98,10 @@ def UI():
             case "list":
                 list()
                 options()
-            case "terminate":
+            case ["terminate", connection_id]:
                 terminate(connection_id)
                 options()
-            case "send":
+            case ["send", connection_id, message]:
                 send(connection_id, message)
                 options()
             case "exit":
