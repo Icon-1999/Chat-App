@@ -2,7 +2,6 @@ import socket
 import sys
 import os
 
-
 n = len(sys.argv)
 
 if (n != 2):
@@ -11,7 +10,7 @@ if (n != 2):
 
 port = int(sys.argv[1])
 
-def help():
+def options():
     print("\n")
     print("1. help\n"
           "2. myip\n"
@@ -21,6 +20,30 @@ def help():
           "6. terminate <connection id.>\n"
           "7. send <connection id.> <message>\n"
           "8. exit\n")
+    
+def help():
+    print("1. 'help' - Displays information about the available user interface options or command manual.\n\n"
+          
+          "2. 'myip'- Displays your IP address of this process.\n\n"
+
+          "3. 'myport' - Displays your port on which this process is listening for incoming connections.\n\n"
+
+          "4. 'connect <destination> <port no>' - This command establishes a new TCP connection to the specified\n"
+            "<destination> at the specified <port no>. The <destination> is the IP address of the receiver's computer.\n"
+            "The <port no> is the receiver's port number that is waiting for incoming TCP connection"
+
+          "5. 'list' - Displays a numbered list of all the connections this process is part of. This numbered list will include\n"
+            "connections initiated by this process and connections initiated by other processes.\n\n"
+
+          "6. 'terminate <connection id.>' - This command will terminate the connection listed under the specified\n"
+            "<connection id.> when LIST is used to display all connections. E.g., terminate 2. In this example, the connection\n"
+            "with 192.168.21.21 should end.\n\n"
+
+          "7. 'send <connection id.> <message>'- This will send the message to the host on the connection\n"
+            "that is designated by the number <connection id.> when command “list” is used. The message to be sent can be up-to 100\n"
+            "characters long, including blank spaces.\n\n"
+
+          "8. 'exit' - Close all connections and terminate this process.\n\n")
     
 def myip():
     # get the hostname
@@ -45,9 +68,9 @@ def terminate(connection_id):
 def send(connection_id, message):
     stuff
     
-    
+
 def UI():
-    help()
+    options()
     UserChoice = ''
 
     while(UserChoice != "exit"):
@@ -59,27 +82,27 @@ def UI():
                 help()
             case "myip":
                 myip()
-                help()
+                options()
             case "myport":
                 myport()
-                help()
+                options()
             case "connect":
                 connect(destination, port)
-                help()
+                options()
             case "list":
                 list()
-                help()
+                options()
             case "terminate":
                 terminate(connection_id)
-                help()
+                options()
             case "send":
                 send(connection_id, message)
-                help()
+                options()
             case "exit":
                 exit(0)
             case _:
                 print("invalid input please choose from the choices above\n")
-                help()
+                options()
 
 def Main():
     if((port <= 0) or (port >= 5000)):
