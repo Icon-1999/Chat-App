@@ -84,18 +84,18 @@ def UI():
         print(input_choice)
 
         match input_choice:
-            case "help":
+            case ["help"]:
                 help()
-            case "myip":
+            case ["myip"]:
                 myip()
                 options()
-            case "myport":
+            case ["myport"]:
                 myport()
                 options()
             case["connect", destination_ip, destination_port]:
                 connect(destination_ip, destination_port)
                 options()
-            case "list":
+            case ["list"]:
                 list()
                 options()
             case ["terminate", connection_id]:
@@ -104,7 +104,7 @@ def UI():
             case ["send", connection_id, message]:
                 send(connection_id, message)
                 options()
-            case "exit":
+            case ["exit"]:
                 exit(0)
             case _:
                 print("invalid input please choose from the choices above\n")
