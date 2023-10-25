@@ -1,7 +1,6 @@
 import socket
 import sys
 import re
-import os
 
 def options():
     print("\n")
@@ -55,7 +54,7 @@ def connect(ip_destination, port_destination):
     #conditions
     #valid IP
     #valid Port
-    s.connect((ip_destination, port_destination))#connect to client
+    c.connect((ip_destination, port_destination))#connect to client
 
 def list():
     stuff
@@ -80,13 +79,13 @@ def validIP(ip):
 def validPort(port):
     while True:
         #if valid port the return port
-        if((my_port > 0) or (my_port < 5000)):
+        if((port > 0) and (port < 5000)):
             print("valid port number")
             return port
         else:
             #if not then prompt error and retry
-            print("Invalid input\n" + "Port number must be between 1 and 4999\n")
-            port = input('Re-enter port number: ')
+            print("Invalid port number\n" + "Port number must be between 1 and 4999\n")
+            port = int(input('Re-enter port number: '))
     
 
 def UI():
@@ -146,7 +145,10 @@ if __name__ == "__main__":
     #number of CL args
     n = len(sys.argv)
 
-    #SOCK_STREAM for TCP connection
+    #client SOCK_STREAM for TCP connection
+    c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    #server SOCK_STREAM for TCP connection
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     #checks valid number of CL args
