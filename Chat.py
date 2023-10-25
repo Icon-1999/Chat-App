@@ -57,6 +57,9 @@ def myport():
     print(f"Your port number is: {my_port}")
 
 def connect(ip_destination, port_destination):
+    #conditions
+    #valid IP
+    #valid Port
     stuff
 
 def list():
@@ -81,7 +84,6 @@ def UI():
 
         UserChoice = input("Select from the options above: ")
         input_choice = UserChoice.split()
-        print(input_choice)
 
         match input_choice:
             case "help":
