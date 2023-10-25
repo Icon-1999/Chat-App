@@ -1,6 +1,5 @@
 import socket
 import sys
-import ipaddress
 import re
 import os
 
@@ -46,9 +45,11 @@ def myip():
     my_ip_address = socket.gethostbyname(hostname)
     # print ip_address
     print(f"your IP Address is: {my_ip_address}")
+    return my_ip_address
 
 def myport():
     print(f"Your port number is: {my_port}")
+    return my_port
 
 def connect(ip_destination, port_destination):
     #conditions
@@ -66,44 +67,46 @@ def send(connection_id, message):
     stuff
 
 def validIP(ip):
-    #if valid ip the return true
-    if re.match(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$', ip):
-        ipaddress.ip_address(ip)
-        print("correct ip")
-        return ip
-    
-    #if not then prompt error and retry
     while True:
-        print("Invalid IP address format\n")
-        try:
-            ip = ipaddress.ip_address(input('Re-enter IP address: '))
-            break
-        except ValueError:
-            continue
-    
-    return ip
+        #if valid ip the return ip
+        if re.match(r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$', ip): #regex to check valid ip
+            print("valid IP address")
+            return ip
+        else:
+            #if not then prompt error and retry
+            print("Invalid IP address format\n" + "Should look like: 192.0.1.1\n")
+            ip = input('Re-enter IP address: ')
 
-def checkValidPort(port):
-    if((my_port <= 0) or (my_port >= 5000)):
-        print("Invalid input\n" + "Port number must be between 1 and 4999")
-        return False
-    else:
-        return True
+def validPort(port):
+    while True:
+        #if valid port the return port
+        if((my_port > 0) or (my_port < 5000)):
+            print("valid port number")
+            return port
+        else:
+            #if not then prompt error and retry
+            print("Invalid input\n" + "Port number must be between 1 and 4999\n")
+            port = input('Re-enter port number: ')
     
 
 def UI():
     options()
+    #variables for functions
     UserChoice = ''
     connection_id = ''
     destination_ip = ''
     destination_port = ''
     message = ''
 
+    #loops till user exits
     while(UserChoice != "exit"):
 
+        #gets input
         UserChoice = input("Select from the options above: ")
+        #splits input into array of strings so code can check for multiple args
         input_choice = UserChoice.split()
 
+        #case for input_choice array
         match input_choice:
             case ["help"]:
                 help()
@@ -114,9 +117,14 @@ def UI():
                 myport()
                 options()
             case["connect", destination_ip, destination_port]:
+                #changes destination port from str to int
                 destination_port = int(destination_port)
+                #gets/checks valid destination IP from user
                 destination_ip = validIP(destination_ip)
-                #connect(destination_ip, destination_port)
+                #gets/checks valid destination port from user
+                destination_port = validPort(destination_port)
+                #calls connect
+                connect(destination_ip, destination_port)
                 options()
             case ["list"]:
                 list()
@@ -133,18 +141,26 @@ def UI():
                 print("invalid input please choose from the choices above\n")
                 options()
 
+#main
 if __name__ == "__main__":
+    #number of CL args
     n = len(sys.argv)
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #SOCK_STREAM for TCP connection
+    #SOCK_STREAM for TCP connection
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    #checks valid number of CL args
     if (n != 2):
         print("Invalid amount of arguments\n" + "try 'python Chat.py <port no>'\n")
         exit(0)
 
+    #gets port number from CL arg
     my_port = int(sys.argv[1])
 
-    if (checkValidPort(my_port)):
-        UI()
+    #gets/checks valid port from user
+    my_port = validPort(my_port)
+    
+    #calls UI
+    UI()
 
     exit(0)
