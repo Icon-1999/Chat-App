@@ -1,14 +1,8 @@
 import socket
 import sys
+import ipaddress
+import re
 import os
-
-n = len(sys.argv)
-
-if (n != 2):
-    print("Invalid amount of arguments\n" + "try 'python Chat.py <port no>'\n")
-    exit(0)
-
-my_port = int(sys.argv[1])
 
 def options():
     print("\n")
@@ -60,7 +54,7 @@ def connect(ip_destination, port_destination):
     #conditions
     #valid IP
     #valid Port
-    stuff
+    s.connect((ip_destination, port_destination))#connect to client
 
 def list():
     stuff
@@ -70,6 +64,31 @@ def terminate(connection_id):
 
 def send(connection_id, message):
     stuff
+
+def validIP(ip):
+    #if valid ip the return true
+    if re.match(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$', ip):
+        ipaddress.ip_address(ip)
+        print("correct ip")
+        return ip
+    
+    #if not then prompt error and retry
+    while True:
+        print("Invalid IP address format\n")
+        try:
+            ip = ipaddress.ip_address(input('Re-enter IP address: '))
+            break
+        except ValueError:
+            continue
+    
+    return ip
+
+def checkValidPort(port):
+    if((my_port <= 0) or (my_port >= 5000)):
+        print("Invalid input\n" + "Port number must be between 1 and 4999")
+        return False
+    else:
+        return True
     
 
 def UI():
@@ -95,7 +114,9 @@ def UI():
                 myport()
                 options()
             case["connect", destination_ip, destination_port]:
-                connect(destination_ip, destination_port)
+                destination_port = int(destination_port)
+                destination_ip = validIP(destination_ip)
+                #connect(destination_ip, destination_port)
                 options()
             case ["list"]:
                 list()
@@ -112,11 +133,18 @@ def UI():
                 print("invalid input please choose from the choices above\n")
                 options()
 
-def Main():
-    if((my_port <= 0) or (my_port >= 5000)):
-        print("Invalid input\n" + "Port number must be between 1 and 4999")
-        return
-    else:
+if __name__ == "__main__":
+    n = len(sys.argv)
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #SOCK_STREAM for TCP connection
+
+    if (n != 2):
+        print("Invalid amount of arguments\n" + "try 'python Chat.py <port no>'\n")
+        exit(0)
+
+    my_port = int(sys.argv[1])
+
+    if (checkValidPort(my_port)):
         UI()
 
-Main()
+    exit(0)
