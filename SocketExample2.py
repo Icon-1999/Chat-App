@@ -1,7 +1,7 @@
 import socket
 import sys
  
-HOST = '' #any working ip
+HOST = '127.0.0.1' #any working ip
 PORT = 4445
  
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

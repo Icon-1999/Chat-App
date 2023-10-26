@@ -1,9 +1,9 @@
 import socket
 import sys
 import re
+import threading
 
 def options():
-    print("\n")
     print("1. help\n"
           "2. myip\n"
           "3. myport\n"
@@ -42,12 +42,9 @@ def myip():
     hostname = socket.gethostname()
     # get the IP address
     my_ip_address = socket.gethostbyname(hostname)
-    # print ip_address
-    print(f"your IP Address is: {my_ip_address}")
     return my_ip_address
 
 def myport():
-    print(f"Your port number is: {my_port}")
     return my_port
 
 def connect(ip_destination, port_destination):
@@ -57,13 +54,13 @@ def connect(ip_destination, port_destination):
     c.connect((ip_destination, port_destination))#connect to client
 
 def list():
-    stuff
+    return
 
 def terminate(connection_id):
-    stuff
+    return
 
 def send(connection_id, message):
-    stuff
+    return
 
 def validIP(ip):
     while True:
@@ -80,13 +77,12 @@ def validPort(port):
     while True:
         #if valid port the return port
         if((port > 0) and (port < 5000)):
-            print("valid port number")
+            print("\nvalid port number\n")
             return port
         else:
             #if not then prompt error and retry
             print("Invalid port number\n" + "Port number must be between 1 and 4999\n")
-            port = int(input('Re-enter port number: '))
-    
+            port = int(input('Re-enter port number: '))  
 
 def UI():
     options()
@@ -110,11 +106,10 @@ def UI():
             case ["help"]:
                 help()
             case ["myip"]:
-                myip()
-                options()
+                # print ip_address
+                print(f"your IP Address is: {myip()}")
             case ["myport"]:
-                myport()
-                options()
+                print(f"Your port number is: {myport()}")
             case["connect", destination_ip, destination_port]:
                 #changes destination port from str to int
                 destination_port = int(destination_port)
@@ -124,21 +119,16 @@ def UI():
                 destination_port = validPort(destination_port)
                 #calls connect
                 connect(destination_ip, destination_port)
-                options()
             case ["list"]:
                 list()
-                options()
             case ["terminate", connection_id]:
                 terminate(connection_id)
-                options()
             case ["send", connection_id, message]:
                 send(connection_id, message)
-                options()
             case ["exit"]:
                 exit(0)
             case _:
-                print("invalid input please choose from the choices above\n")
-                options()
+                print("Invalid input. Type 'help' to see options\n")
 
 #main
 if __name__ == "__main__":
