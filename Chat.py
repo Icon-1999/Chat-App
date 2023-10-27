@@ -3,6 +3,23 @@ import sys
 import re
 import threading
 
+class Server_Side(threading.Thread):
+    #receiving incoming connection
+    def receive(self):
+        while True:
+            #To receive clients incoming message
+            client, address = s.accept()
+            print(f"Connected with {str(address)}")
+    
+    #receiving incoming message
+    def handle_message(self):
+        
+        return
+    
+    #runs thread and call receive
+    def run(self):
+        self.receive()
+
 #class of users
 class users:
     def __init__(self, ip_address, port):
@@ -94,7 +111,7 @@ def validPort(port):
         else:
             #if not then prompt error and retry
             print("Invalid port number\n" + "Port number must be between 1 and 4999\n")
-            port = int(input('Re-enter port number: '))  
+            port = int(input('Re-enter port number: '))
 
 def UI():
     options()
@@ -105,42 +122,48 @@ def UI():
     destination_port = ''
     message = ''
 
-    #loops till user exits
-    while(UserChoice != "exit"):
+    try:
+        t = Server_Side()
+        t.daemon = True
+        t.start()
+        #loops till user exits
+        while 1:
 
-        #gets input
-        UserChoice = input("Select from the options above: ")
-        #splits input into array of strings so code can check for multiple args
-        input_choice = UserChoice.split()
+            #gets input
+            UserChoice = input("")
+            #splits input into array of strings so code can check for multiple args
+            input_choice = UserChoice.split()
 
-        #case for input_choice array
-        match input_choice:
-            case ["help"]:
-                help()
-            case ["myip"]:
-                # print ip_address
-                print(f"your IP Address is: {myip()}")
-            case ["myport"]:
-                print(f"Your port number is: {myport()}")
-            case["connect", destination_ip, destination_port]:
-                #changes destination port from str to int
-                destination_port = int(destination_port)
-                #gets/checks valid destination IP from user
-                destination_ip = validIP(destination_ip)
-                #gets/checks valid destination port from user
-                destination_port = validPort(destination_port)
-                #calls connect
-                connect(destination_ip, destination_port)
-            case ["list"]:
-                list()
-            case ["terminate", connection_id]:
-                terminate(connection_id)
-            case ["send", connection_id, message]:
-                send(connection_id, message)
-            case ["exit"]:
-                exit(0)
-            case _:
-                print("Invalid input. Type 'help' to see options\n")
+            #case for input_choice array
+            match input_choice:
+                case ["help"]:
+                    help()
+                case ["myip"]:
+                    # print ip_address
+                    print(f"your IP Address is: {myip()}")
+                case ["myport"]:
+                    print(f"Your port number is: {myport()}")
+                case["connect", destination_ip, destination_port]:
+                    #changes destination port from str to int
+                    destination_port = int(destination_port)
+                    #gets/checks valid destination IP from user
+                    destination_ip = validIP(destination_ip)
+                    #gets/checks valid destination port from user
+                    destination_port = validPort(destination_port)
+                    #calls connect
+                    connect(destination_ip, destination_port)
+                case ["list"]:
+                    list()
+                case ["terminate", connection_id]:
+                    terminate(connection_id)
+                case ["send", connection_id, message]:
+                    send(connection_id, message)
+                case ["exit"]:
+                    exit(0)
+                case _:
+                    print("Invalid input. Type 'help' to see options\n")
+    except KeyboardInterrupt:
+        print("Done!")
 
 #main
 if __name__ == "__main__":
@@ -163,6 +186,10 @@ if __name__ == "__main__":
 
     #gets/checks valid port from user
     my_port = validPort(my_port)
+
+    #binds source ip and source port for rcv
+    s.bind((myip(), myport()))
+    s.listen()
     
     #calls UI
     UI()
