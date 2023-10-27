@@ -3,6 +3,15 @@ import sys
 import re
 import threading
 
+#class of users
+class users:
+    def __init__(self, ip_address, port):
+        self.ip_address = ip_address
+        self.port = port
+
+#list of users
+usersList = []
+
 def options():
     print("1. help\n"
           "2. myip\n"
@@ -53,7 +62,10 @@ def connect(ip_destination, port_destination):
     #valid Port
     c.connect((ip_destination, port_destination))#connect to client
 
-def list():
+    #add array to list
+    usersList.append(users(ip_destination, port_destination))
+
+def list(self):
     return
 
 def terminate(connection_id):
