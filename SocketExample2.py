@@ -6,7 +6,7 @@ hostname = socket.gethostname()
 # get the IP address
 my_ip_address = socket.gethostbyname(hostname)
 
-print('localhost')
+print('127.0.0.1')
 
 HOST = my_ip_address #any working ip
 PORT = 4445
@@ -36,6 +36,6 @@ msg = s.recv(1024)
 while msg:
     print('Received:' + msg.decode())
     msg = s.recv(1024)
- 
+
 # disconnect the client
 s.close()
