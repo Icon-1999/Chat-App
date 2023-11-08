@@ -5,7 +5,7 @@ import sys
 hostname = socket.gethostname()
 # get the IP address
 #127.0.0.1 = socket.gethostbyname(hostname)
-
+print('FENCE 2')
 print('localhost')
 
 HOST = '127.0.0.1'  # any working IP
