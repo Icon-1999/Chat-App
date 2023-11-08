@@ -2,23 +2,41 @@ import socket
 import sys
 import re
 import threading
+import shlex
 
 class Server_Side(threading.Thread):
-    #receiving incoming connection
-    def receive(self):
-        while True:
-            #To receive clients incoming message
-            client, address = s.accept()
-            print(f"Connected with {str(address)}")
-    
-    #receiving incoming message
-    def handle_message(self):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.bind((myip(), myport()))
+        self.s.listen(5)
+        self.connections = []
         
-        return
-    
-    #runs thread and call receive
+    # receiving incoming connection
+    def receive(self, client, address):
+        while True:
+            try:
+                data = client.recv(1024).decode()
+                if data:
+                    print(f"Received message from {str(address)}: {data}")
+                    print(f"Sender's Port: {address[1]}")
+                    print(f"Message: \"{data}\"")
+                else:
+                    print(f"Closed connection from {str(address)}")
+                    self.connections.remove(client)
+                    break
+            except:
+                print(f"Error receiving message from {str(address)}")
+                self.connections.remove(client)
+                break
+
+    # runs thread and call receive
     def run(self):
-        self.receive()
+        while True:
+            client, address = self.s.accept()
+            self.connections.append(client)
+            print(f"Connected with {str(address)}")
+            threading.Thread(target=self.receive, args=(client, address)).start()
 
 #class of users
 class users:
@@ -82,14 +100,27 @@ def connect(ip_destination, port_destination):
     #add array to list
     usersList.append(users(ip_destination, port_destination))
 
-def list(self):
-    return
+def list():
+    print("List of all connections:")
+    for i, user in enumerate(usersList, 1):
+        print(f"{i}. {user.ip_address}:{user.port}")
 
 def terminate(connection_id):
     return
 
 def send(connection_id, message):
-    return
+    if int(connection_id) > len(usersList) or int(connection_id) < 1:
+        print("Invalid connection ID. Please use 'list' to see available connections.")
+        return
+
+    try:
+        index = int(connection_id) - 1
+        user = usersList[index]
+        c.sendall(message.encode())
+        print(f"Message sent to Connection ID: {connection_id}")
+    except:
+        print("Error sending message.")
+    
 
 def validIP(ip):
     while True:
@@ -120,7 +151,7 @@ def UI():
     connection_id = ''
     destination_ip = ''
     destination_port = ''
-    message = ''
+    #message = ''
 
     try:
         t = Server_Side()
@@ -156,7 +187,8 @@ def UI():
                     list()
                 case ["terminate", connection_id]:
                     terminate(connection_id)
-                case ["send", connection_id, message]:
+                case ["send", connection_id]:
+                    message = input("Enter your message: ")
                     send(connection_id, message)
                 case ["exit"]:
                     exit(0)
@@ -173,8 +205,6 @@ if __name__ == "__main__":
     #client SOCK_STREAM for TCP connection
     c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    #server SOCK_STREAM for TCP connection
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     #checks valid number of CL args
     if (n != 2):
@@ -187,9 +217,6 @@ if __name__ == "__main__":
     #gets/checks valid port from user
     my_port = validPort(my_port)
 
-    #binds source ip and source port for rcv
-    s.bind((myip(), myport()))
-    s.listen()
     
     #calls UI
     UI()
