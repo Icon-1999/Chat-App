@@ -40,9 +40,10 @@ class Server_Side(threading.Thread):
 
 #class of users
 class users:
-    def __init__(self, ip_address, port):
+    def __init__(self, ip_address, port, connection):
         self.ip_address = ip_address
         self.port = port
+        self.connection = connection
 
 #list of users
 usersList = []
@@ -92,13 +93,11 @@ def myport():
     return my_port
 
 def connect(ip_destination, port_destination):
-    #conditions
-    #valid IP
-    #valid Port
-    c.connect((ip_destination, port_destination))#connect to client
-
-    #add array to list
-    usersList.append(users(ip_destination, port_destination))
+    try:
+        c.connect((ip_destination, port_destination))  # connect to client
+        usersList.append(users(ip_destination, port_destination, c))
+    except Exception as e:
+        print(f"Error connecting to {ip_destination}:{port_destination}: {e}")
 
 def list():
     print("List of all connections:")
@@ -106,7 +105,23 @@ def list():
         print(f"{i}. {user.ip_address}:{user.port}")
 
 def terminate(connection_id):
-    return
+    if not connection_id.isdigit():
+        print("Invalid connection ID. Please enter a valid number.")
+        return
+
+    index = int(connection_id) - 1
+
+    if index < 0 or index >= len(usersList):
+        print("Invalid connection ID. Please use 'list' to see available connections.")
+        return
+
+    try:
+        user = usersList[index]
+        user.connection.close()
+        del usersList[index]
+        print(f"Connection {connection_id} terminated.")
+    except Exception as e:
+        print(f"Error terminating connection: {e}")
 
 def send(connection_id, message):
     if int(connection_id) > len(usersList) or int(connection_id) < 1:
