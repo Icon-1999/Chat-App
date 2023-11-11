@@ -146,6 +146,15 @@ def send(connection_id, message):
         print(f"Message sent to Connection ID: {connection_id}")
     except Exception as e:
         print(f"Error sending message: {e}")
+
+def exit_program():
+    message = f"{myip()}:{myport()} has left the chat"
+
+    for i, user in enumerate(usersList, 1):
+        user.connection.sendall(message.encode())
+
+    print("Good bye!")
+    exit(0)
     
 
 def validIP(ip):
@@ -216,8 +225,7 @@ def UI():
                     message = f"Message received from  {myip()}\nSender's Port: {myport()}\n{users_message}"
                     send(connection_id, message)
                 case ["exit"]:
-                    print("Good bye!")
-                    exit(0)
+                    exit_program()
                 case _:
                     print("Invalid input. Type 'help' to see options\n")
     except KeyboardInterrupt:
