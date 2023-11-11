@@ -218,6 +218,7 @@ def UI():
                     message = f"Message received from  {myip()}\nSender's Port: {myport()}\n{users_message}"
                     send(connection_id, message)
                 case ["exit"]:
+                    print("Good bye!")
                     exit(0)
                 case _:
                     print("Invalid input. Type 'help' to see options\n")
