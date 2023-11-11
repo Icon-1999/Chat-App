@@ -23,11 +23,9 @@ class Server_Side(threading.Thread):
                     print(f"Message: \"{data}\"")
                 else:
                     print(f"Closed connection from {str(address)}")
-                    self.connections.remove(client)
                     break
             except:
                 print(f"Error receiving message from {str(address)}")
-                self.connections.remove(client)
                 break
 
     # runs thread and call receive
