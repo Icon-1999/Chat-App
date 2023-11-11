@@ -118,7 +118,7 @@ def connect(ip_destination, port_destination):
 def list():
     print("List of all connections:")
     for i, user in enumerate(usersList, 1):
-        print(f"{i}. {user.ip_address}:{user.port}")
+        print(f"{i} {user.ip_address} {user.port}")
 
 def terminate(connection_id):
     if not connection_id.isdigit():
@@ -157,7 +157,6 @@ def validIP(ip):
     while True:
         #if valid ip the return ip
         if re.match(r'^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$', ip): #regex to check valid ip
-            print("valid IP address")
             return ip
         else:
             #if not then prompt error and retry
@@ -168,7 +167,6 @@ def validPort(port):
     while True:
         #if valid port the return port
         if((port > 0) and (port < 5000)):
-            print("\nvalid port number\n")
             return port
         else:
             #if not then prompt error and retry
