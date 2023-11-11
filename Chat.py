@@ -217,14 +217,15 @@ def UI():
                 case ["terminate", connection_id]:
                     terminate(connection_id)
                 case ["send", connection_id]:
-                    message = input("Enter your message: ")
+                    users_message = input("Enter your message: ")
+                    message = f"Message received from  {myip()}\nSender's Port: {myport()}\n{users_message}"
                     send(connection_id, message)
                 case ["exit"]:
                     exit(0)
                 case _:
                     print("Invalid input. Type 'help' to see options\n")
     except KeyboardInterrupt:
-        print("Done!")
+        print("Good bye!")
 
 #main
 if __name__ == "__main__":
