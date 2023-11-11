@@ -55,7 +55,7 @@ def options():
           "4. connect <destination> <port no>\n"
           "5. list\n"
           "6. terminate <connection id.>\n"
-          "7. send <connection id.> <message>\n"
+          "7. send <connection id.>\n"
           "8. exit\n")
     
 def help():
@@ -76,9 +76,9 @@ def help():
             "<connection id.> when LIST is used to display all connections. E.g., terminate 2. In this example, the\n"
             "connection with 192.168.21.21 should end.\n\n"
 
-          "7. 'send <connection id.> <message>'- This will send the message to the host on the connection that is\n"
-            "designated by the number <connection id.> when command “list” is used. The message to be sent can be up-to\n"
-            "100 characters long, including blank spaces.\n\n"
+          "7. 'send <connection id.>'- This will send the message to the host on the connection that is designated by \n"
+            "the number <connection id.> when command “list” is used. The message to be sent can be up-to 100 characters\n"
+            "long, including blank spaces.\n\n"
 
           "8. 'exit' - Close all connections and terminate this process.\n\n")
     
@@ -98,11 +98,20 @@ def myport():
     return my_port
 
 def connect(ip_destination, port_destination):
+    if (ip_destination ==  myip()):
+        print("Error: Destination ip can not be your ip")
+        return
+    
+    for i, user in enumerate(usersList, 1):
+        if (user.ip_address == ip_destination):
+            print("Error: Destination ip has been already connected")
+            return
+
     try:
         c.connect((ip_destination, port_destination))  # connect to client
         usersList.append(users(ip_destination, port_destination, c))
     except Exception as e:
-        print(f"Error connecting to {ip_destination}:{port_destination}: {e}")
+        print(f"Error connecting to {ip_destination}:{port_destination}")
 
 def list():
     print("List of all connections:")
