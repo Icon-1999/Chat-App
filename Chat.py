@@ -19,6 +19,11 @@ class Server_Side(threading.Thread):
                 data = client.recv(1024).decode()
                 if data:
                     print(f"Message: \"{data}\"")
+                    if "has left the chat" in data:
+                        user_data = data.split()
+                        for i, user in enumerate(usersList, 1):
+                            if (user_data[0] == user.ip_address):
+                                del usersList[i]
                 else:
                     print(f"Closed connection from {str(address[0])}")
                     break
