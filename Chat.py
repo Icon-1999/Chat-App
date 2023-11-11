@@ -83,11 +83,16 @@ def help():
           "8. 'exit' - Close all connections and terminate this process.\n\n")
     
 def myip():
-    # get the hostname
-    hostname = socket.gethostname()
-    # get the IP address
-    my_ip_address = socket.gethostbyname(hostname)
-    return my_ip_address
+    t = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        t.connect(('10.255.255.255', 1))
+        IP = t.getsockname()[0]
+    except:
+        IP = '127.0.0.1'
+    finally:
+        t.close()
+    return IP
 
 def myport():
     return my_port
