@@ -31,7 +31,7 @@ class Server_Side(threading.Thread):
     def run(self):
         while True:
             client, address = self.s.accept()
-            print(f"Connected with {str(address)}")
+            print(f"Connected with {str(address[0])}")
             threading.Thread(target=self.receive, args=(client, address)).start()
 
 #class of users
