@@ -22,10 +22,9 @@ class Server_Side(threading.Thread):
                     print(f"Sender's Port: {address[1]}")
                     print(f"Message: \"{data}\"")
                 else:
-                    print(f"Closed connection from {str(address)}")
                     break
             except:
-                print(f"Error receiving message from {str(address)}")
+                print(f"Closed connection from {str(address)}")
                 break
 
     # runs thread and call receive
