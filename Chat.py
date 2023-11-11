@@ -153,7 +153,7 @@ def send(connection_id, message):
         print(f"Error sending message: {e}")
 
 def exit_program():
-    message = f"{myip()}:{myport()} has left the chat"
+    message = f"{myip()} {myport()} has left the chat"
 
     for i, user in enumerate(usersList, 1):
         user.connection.sendall(message.encode())
