@@ -34,7 +34,6 @@ class Server_Side(threading.Thread):
     def run(self):
         while True:
             client, address = self.s.accept()
-            self.connections.append(client)
             print(f"Connected with {str(address)}")
             threading.Thread(target=self.receive, args=(client, address)).start()
 
@@ -106,12 +105,15 @@ def connect(ip_destination, port_destination):
         if (user.ip_address == ip_destination):
             print("Error: Destination ip has been already connected")
             return
-
+    
     try:
-        c.connect((ip_destination, port_destination))  # connect to client
-        usersList.append(users(ip_destination, port_destination, c))
+        # Create a new socket for each connection
+        new_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        new_socket.connect((ip_destination, port_destination))  # Connect to client
+        usersList.append(users(ip_destination, port_destination, new_socket))
+        print(f"Connected to {ip_destination}:{port_destination}")
     except Exception as e:
-        print(f"Error connecting to {ip_destination}:{port_destination}")
+        print(f"Error connecting to {ip_destination}:{port_destination}: {e}")
 
 def list():
     print("List of all connections:")
@@ -138,17 +140,17 @@ def terminate(connection_id):
         print(f"Error terminating connection: {e}")
 
 def send(connection_id, message):
-    if int(connection_id) > len(usersList) or int(connection_id) < 1:
+    if not connection_id.isdigit() or int(connection_id) - 1 not in range(len(usersList)):
         print("Invalid connection ID. Please use 'list' to see available connections.")
         return
 
     try:
         index = int(connection_id) - 1
         user = usersList[index]
-        c.sendall(message.encode())
+        user.connection.sendall(message.encode())  # Use the specific connection for the user
         print(f"Message sent to Connection ID: {connection_id}")
-    except:
-        print("Error sending message.")
+    except Exception as e:
+        print(f"Error sending message: {e}")
     
 
 def validIP(ip):
@@ -230,10 +232,6 @@ def UI():
 if __name__ == "__main__":
     #number of CL args
     n = len(sys.argv)
-
-    #client SOCK_STREAM for TCP connection
-    c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 
     #checks valid number of CL args
     if (n != 2):
