@@ -18,13 +18,11 @@ class Server_Side(threading.Thread):
             try:
                 data = client.recv(1024).decode()
                 if data:
-                    print(f"Received message from {str(address)}: {data}")
-                    print(f"Sender's Port: {address[1]}")
                     print(f"Message: \"{data}\"")
                 else:
+                    print(f"Closed connection from {str(address[0])}")
                     break
             except:
-                print(f"Closed connection from {str(address)}")
                 break
 
     # runs thread and call receive
