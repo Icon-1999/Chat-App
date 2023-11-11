@@ -23,7 +23,7 @@ class Server_Side(threading.Thread):
                         user_data = data.split()
                         for i, user in enumerate(usersList, 1):
                             if (user_data[0] == user.ip_address):
-                                del usersList[i]
+                                del usersList[i-1]
                 else:
                     print(f"Closed connection from {str(address[0])}")
                     break
