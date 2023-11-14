@@ -174,13 +174,18 @@ def validIP(ip):
 
 def validPort(port):
     while True:
-        #if valid port the return port
-        if((port > 0) and (port < 5000)):
-            return port
+        if port.isdigit():
+            port = int(port)
+            if((port > 0) and (port < 5000)):
+                #if valid port the return port
+                return port
+            else:
+                #if not then prompt error and retry
+                print("Invalid port number\n" + "Port number must be between 1 and 4999\n")
+                port = input('Re-enter port number: ')
         else:
-            #if not then prompt error and retry
-            print("Invalid port number\n" + "Port number must be between 1 and 4999\n")
-            port = int(input('Re-enter port number: '))
+            print("Invalid port number\n" + "Port must be number\n")
+            port = input('Re-enter port number: ')
 
 def UI():
     options()
@@ -247,10 +252,8 @@ if __name__ == "__main__":
         exit(0)
 
     #gets port number from CL arg
-    my_port = int(sys.argv[1])
-
     #gets/checks valid port from user
-    my_port = validPort(my_port)
+    my_port = validPort(sys.argv[1])
 
     
     #calls UI
